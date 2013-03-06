@@ -28,7 +28,7 @@ def prep_incidents(incidents):
     return incident_list, len(incident_list)
 
 
-@app.route('/', methods=['GET'])
+@app.route('/plow/', methods=['GET'])
 def incident_list():
     connection = pymongo.MongoClient()
     db = connection.dcplow
@@ -40,7 +40,7 @@ def incident_list():
     return json.dumps(response)
 
 
-@app.route('/vehicle/<vehicle_id>/', methods=['GET'])
+@app.route('/plow/vehicle/<vehicle_id>/', methods=['GET'])
 def vehicle_list(vehicle_id):
     connection = pymongo.MongoClient()
     db = connection.dcplow
