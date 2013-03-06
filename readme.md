@@ -24,4 +24,4 @@ Either of these things might be useful to you.
 
 Run the cron every five minutes as the ubuntu user. Note: This user is not required, just an example.
 
-```*/5 * * * * ubuntu workon mister-plow && /home/ubuntu/apps/mister-plow/repository/scraper.py```
+```*/5 * * * * ubuntu /usr/local/bin/virtualenvwrapper.sh && workon mister-plow && /home/ubuntu/apps/mister-plow/repository/scraper.py```
