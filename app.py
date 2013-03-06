@@ -30,26 +30,49 @@ def prep_incidents(incidents):
 
 @app.route('/plow/', methods=['GET'])
 def incident_list():
+    """
+    Returns a list of incidents in JSON.
+    """
+
+    # Connect.
     connection = pymongo.MongoClient()
     db = connection.dcplow
+
+    # Get everything in the DB.
     query = db.incidents.find()
     query = prep_incidents(query)
+
+    # Prepare a response.
     response = {}
     response['items'] = sorted(query[0], key=lambda item: item['time'], reverse=True)
     response['count'] = query[1]
+
+    # Return the response.
     return json.dumps(response)
 
 
 @app.route('/plow/vehicle/<vehicle_id>/', methods=['GET'])
-def vehicle_list(vehicle_id):
+def incidents_by_vehicle(vehicle_id):
+    """
+    Returns a list of incidents for each vehicle ID.
+    """
+
+    # Connect.
     connection = pymongo.MongoClient()
     db = connection.dcplow
+
+    # Get the incidents for this vehicle_id.
     query = db.incidents.find({'vehicle_id': vehicle_id})
     query = prep_incidents(query)
+
+    # Prepare the response.
     response = {}
     response['items'] = sorted(query[0], key=lambda item: item['time'], reverse=True)
     response['count'] = query[1]
+
+    # Return the response.
     return json.dumps(response)
 
+# Give Flask wings.
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5002, debug=True)
