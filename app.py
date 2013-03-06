@@ -18,15 +18,27 @@ def prep_incidents(incidents):
     for item in incidents:
         item_dict = {}
         for key, value in item.items():
+
+            # Format ObjectIds.
             if isinstance(value, ObjectId):
                 item_dict['object_id'] = value.__str__()
+
+            # Format time.
             elif key == 'time':
                 item_dict['time'] = time.mktime(value.timetuple())
                 item_dict['time_string'] = value.strftime('%m/%d/%Y %H:%M:%S %p')
+
+            # Just stick everything else in there.
             else:
                 item_dict[key] = value
+
+        # Create the detail URL.
         item_dict['detail_uri'] = '/plow/vehicles/%s/' % item_dict['vehicle_id']
+
+        # Create the incident in the list.
         incident_list.append(item_dict)
+
+    # Return the list and a count.
     return incident_list, len(incident_list)
 
 
@@ -67,25 +79,40 @@ def incidents_grouped_by_vehicle():
     # Get the incidents for this vehicle_id.
     query = db.incidents.find()
 
+    # Set up some intermediate storage.
     vehicles_dict = {}
     count = 0
+
+    # Need a list of vehicles without duplicates. Hence: Set.
     vehicles = Set([])
+
+    # Loop.
     for item in query:
         item_dict = {}
         for key, value in item.items():
+
+            # Handle ObjectIds.
             if isinstance(value, ObjectId):
                 item_dict['object_id'] = value.__str__()
+
+            # Handle time.
             elif key == 'time':
                 item_dict['time'] = time.mktime(value.timetuple())
                 item_dict['time_string'] = value.strftime('%m/%d/%Y %H:%M:%S %p')
+
+            # Just put other stuff straight in there.
             else:
                 item_dict[key] = value
-        item_dict['detail_uri'] = '/plow/vehicles/%s/' % item_dict['vehicle_id']
-        vehicles_dict.setdefault(item_dict['vehicle_id'], []).append(item_dict)
-        count += 1
 
-        for item in vehicles_dict:
-            vehicles.add(item)
+        # Make the detail URI.
+        item_dict['detail_uri'] = '/plow/vehicles/%s/' % item_dict['vehicle_id']
+
+        # Try to group with this vehicle id. If it doesn't exist, create it.
+        vehicles_dict.setdefault(item_dict['vehicle_id'], []).append(item_dict)
+        vehicles.add(item_dict['vehicle_id'])
+
+        # Increment the count.
+        count += 1
 
     # Prepare the response.
     response = {}
