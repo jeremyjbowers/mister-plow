@@ -1,13 +1,25 @@
 #!/usr/bin/env python
+import datetime
+from datetime import timedelta
+
 from dateutil.parser import *
 import pymongo
 import requests
 
 incidents_list = []
 
+# Bounding box from @stiles. For all of the DC metro area.
+box = '&ne_lat=38.9845&ne_lng=-76.866&sw_lat=38.8012&sw_lng=-77.161'
+
+# Construct a start and end time. Only scrape a few days (they're SLOOOOOOOOW).
+end_time = datetime.date.today().strftime('%m/%d/%Y')
+start_time = (datetime.date.today() - timedelta(3)).strftime('%m/%d/%Y')
+
+# Construct the URL.
+url = 'http://snowmap.dc.gov/getData.aspx?starttime=%s&endtime=%s%s' % (start_time, end_time, box)
+
 # Scrape this URL.
-# Bounding box from @stiles.
-r = requests.get('http://snowmap.dc.gov/getData.aspx?starttime=3/3/2013&endtime=3/6/2013&ne_lat=38.9845&ne_lng=-76.866&sw_lat=38.8012&sw_lng=-77.161')
+r = requests.get(url)
 
 # First, remove the gross stuff at the bottom of the response.
 # Then, split on the actual delimiter, which is %%.
