@@ -7,6 +7,10 @@ Mister Plow is:
 
 Either of these things might be useful to you.
 
+## See it in action!
+* Map via [@vtcraghead](http://twitter.com/@vtcraghead): [http://dev.geosprocket.com/mapbox/dcplows/](http://dev.geosprocket.com/mapbox/dcplows/)
+* API: [http://www.jeremybowers.com/plow/vehicles/](http://www.jeremybowers.com/plow/vehicles/)
+
 ## Setup
 
 1. Install mongodb.
@@ -18,6 +22,7 @@ Either of these things might be useful to you.
 ## JSON
 
 * ```/plow/```: Returns a list of snowplow incidents, sorted newest-to-oldest.
+* ```/plow/vehicle/```: Returns a list of vehicles, with a list of snowplow incidents per vehicle, sorted newest-to-oldest.
 * ```/plow/vehicle/<vehicle_id>```: Returns a list of snowplow incidents for a single vehicle, sorted newest-to-oldest.
 
 ## Cron
