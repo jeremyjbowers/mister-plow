@@ -23,7 +23,7 @@ Either of these things might be useful to you.
 
 * ```/plow/```: Returns a list of snowplow incidents, sorted newest-to-oldest.
 * ```/plow/vehicles/```: Returns a list of vehicles, with a list of snowplow incidents per vehicle, sorted newest-to-oldest.
-* ```/plow/vehicle/<vehicle_id>```: Returns a list of snowplow incidents for a single vehicle, sorted newest-to-oldest.
+* ```/plow/vehicles/<vehicle_id>```: Returns a list of snowplow incidents for a single vehicle, sorted newest-to-oldest.
 
 ## Cron
 
